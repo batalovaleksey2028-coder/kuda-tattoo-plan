@@ -381,8 +381,13 @@ const TASK_LABEL = { edit:"Монтаж", script:"Текст" };
 
 const OWNER_LABEL = { you:"Леша", nastya:"Настя", sasha:"Саша" };
 
+const SASHA_TYPES = ['Ролик с тату', 'Подборка тату/эскизов'];
+
 function ownerFor(track, entry){
-  if(entry.status === 'edit') return track === 'darina' ? 'you' : 'sasha';
+  if(entry.status === 'edit'){
+    if(track === 'darina') return 'you';
+    return SASHA_TYPES.includes(entry.type) ? 'sasha' : 'you';
+  }
   if(entry.status === 'script') return entry.type === 'Аниме-рубрика' ? 'nastya' : 'you';
   return null;
 }
