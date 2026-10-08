@@ -225,26 +225,6 @@
   .shot{font-size:11.5px;color:var(--text);}
   .shothead{font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-dim);border-bottom:1px solid var(--line);padding-bottom:3px;margin-top:8px;}
 
-  .tracker{display:flex;gap:6px;margin-top:8px;}
-  .toggle{
-    flex:1;
-    font-family:'Work Sans',sans-serif;
-    font-size:10.5px;
-    font-weight:600;
-    letter-spacing:.02em;
-    text-transform:uppercase;
-    padding:6px 8px;
-    border-radius:6px;
-    border:1px solid var(--line);
-    background:transparent;
-    color:var(--text-dim);
-    cursor:pointer;
-    transition:background .15s,color .15s,border-color .15s;
-    min-width:0;
-  }
-  .toggle:hover{border-color:var(--text-dim);}
-  .toggle.on{background:var(--ready-soft);color:var(--ready);border-color:var(--ready);}
-
   .offday{
     display:flex;
     align-items:center;
@@ -385,9 +365,6 @@ const OFF_DAYS = { 13: "Вт" };
 
 const STATUS_LABEL = { ready:"Готово к выкладке", edit:"На монтаже", record:"Записать", script:"Нужен текст/монтаж", wait:"Нужна съёмка" };
 
-let statusMap = {};
-let dbNS = null;
-
 function escapeHtml(s){
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
@@ -414,14 +391,6 @@ function scriptBlock(entry){
   return `<details class="script"><summary>Текст и раскадровка</summary>${inner}</details>`;
 }
 
-function trackerHtml(id){
-  if(!id) return '';
-  const s = statusMap[id] || {recorded:false, posted:false};
-  return `<div class="tracker">
-    <button type="button" class="toggle ${s.recorded?'on':''}" onclick="toggleStatus('${id}','recorded')">${s.recorded?'✓ Записано':'Записано?'}</button>
-  </div>`;
-}
-
 function card(track, entry, id){
   if(!entry) return `<div class="card empty">—</div>`;
   const thumb = entry.img ? `<img class="thumb" src="${entry.img}" alt="">` : '';
@@ -436,7 +405,6 @@ function card(track, entry, id){
         <div class="status ${entry.status}">${STATUS_LABEL[entry.status]}</div>
         ${refBlock(entry)}
         ${scriptBlock(entry)}
-        ${trackerHtml(id)}
       </div>
     </div>`;
 }
@@ -451,7 +419,6 @@ function studioCell(row){
         <div class="title">${escapeHtml(row.darina.title)}</div>
         <div class="status ${row.darina.status}">${STATUS_LABEL[row.darina.status]}</div>
         ${scriptBlock(row.darina)}
-        ${trackerHtml(id)}
       </div>
     </div>`;
   }
@@ -489,31 +456,5 @@ function renderDays(){
   document.getElementById('days').innerHTML = html;
 }
 
-async function toggleStatus(id, field){
-  const cur = statusMap[id] || {recorded:false, posted:false};
-  const next = { recorded: cur.recorded||false, posted: cur.posted||false };
-  next[field] = !next[field];
-  statusMap[id] = next;
-  renderDays();
-  if(!dbNS) return;
-  try{ await dbNS.doc('status/'+id).set(next); }
-  catch(e){ /* live snapshot will resync on next delivery */ }
-}
-
-async function initDb(){
-  if(!window.claude || !window.claude.use) return;
-  try{
-    dbNS = await window.claude.use('db');
-    if(!dbNS) return;
-    dbNS.collection('status').onSnapshot(function(snap){
-      const map = {};
-      snap.docs.forEach(function(d){ map[d.id] = d.data(); });
-      statusMap = map;
-      renderDays();
-    });
-  }catch(e){ /* db unavailable in this view — tracker stays local-only */ }
-}
-
 renderDays();
-initDb();
 </script>
