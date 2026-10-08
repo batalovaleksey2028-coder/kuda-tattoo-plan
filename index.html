@@ -109,6 +109,18 @@
     min-width:0;
   }
   .stack{display:flex;flex-direction:column;gap:12px;min-width:0;}
+  .reminder{
+    grid-column:2;
+    margin-top:10px;
+    font-size:12px;
+    line-height:1.45;
+    color:var(--wait);
+    background:var(--wait-soft);
+    border:1px solid var(--wait);
+    border-radius:8px;
+    padding:9px 12px;
+  }
+  .reminder b{color:var(--text);}
   @media (max-width:560px){
     .cards{grid-template-columns:1fr;}
     .day{grid-template-columns:48px 1fr;}
@@ -181,6 +193,7 @@
   .status.record{background:var(--record-soft);color:var(--record);}
   .status.script{background:var(--write-soft);color:var(--write);}
   .status.wait{background:var(--wait-soft);color:var(--wait);}
+  .status.plan{background:var(--studio-soft);color:var(--studio);}
 
   .ref{
     font-size:12px;
@@ -329,12 +342,12 @@ const WEEKS = [
       studio:{type:"Подборка тату/эскизов",title:"Подборка последних работ #1",material:"Тот же набор, адаптация под студийный акк",status:"wait"} },
     { d:10, wd:"Сб",
       darina:{type:"Подборка тату",title:"Подборка последних работ",material:"Старые работы + она сама в кадре",status:"wait"},
-      studio:{type:"Аниме-рубрика",title:"Мысли, в которых зритель узнаёт себя",material:"Текст поверх аниме-кадров, без начитки, 4-5 фраз",status:"script",ref:REF_THOUGHTS} },
+      studio:{type:"Аниме-рубрика",title:"Мысли, в которых зритель узнаёт себя",material:"Текст поверх аниме-кадров, без начитки, 4-5 фраз",status:"script",ref:REF_THOUGHTS,talking:true} },
     { d:11, wd:"Вс",
       darina:null,
       studio:[
         {type:"Ролик с тату",title:"[под вопросом] Девушка в противогазе",material:"4 клипа сконвертированы в цвет, но ролик ещё не смонтирован — не гарантировано к этому дню, нужен запасной вариант если не успеем",status:"wait",img:"gachiakuta.jpg"},
-        {type:"Аниме-рубрика",title:"Что я гуглила сегодня — версия тату-мастера",material:"Имитация поисковой строки, 2-3 запроса",status:"script",ref:REF_GOOGLED},
+        {type:"Аниме-рубрика",title:"Что я гуглила сегодня — версия тату-мастера",material:"Имитация поисковой строки, 2-3 запроса",status:"script",ref:REF_GOOGLED,talking:true},
       ] },
   ]},
   { label: "12 — 18 октября", days: [
@@ -352,8 +365,8 @@ const WEEKS = [
     { d:17, wd:"Сб",
       darina:{type:"Базовый ролик",title:"Darling in the Franxx — рукав манга-панелями",material:"Планируется новая съёмка этой тату на следующей неделе (сейчас есть только фото IMG_3543, тот же рукав что в резервной карусели)",status:"wait",img:"darling_franxx.jpg"},
       studio:[
-        {type:"Аниме-рубрика",title:"Мнение об аниме по картинкам тату / подборка с подтекстом шутки",material:"Блок А ротации, следующий непройденный вариант",status:"plan"},
-        {type:"Аниме-рубрика",title:"Рисуем непопулярное аниме",material:"Блок Б ротации, следующий непройденный вариант",status:"plan"},
+        {type:"Аниме-рубрика",title:"Мнение об аниме по картинкам тату / подборка с подтекстом шутки",material:"Блок А ротации, следующий непройденный вариант",status:"plan",talking:true},
+        {type:"Аниме-рубрика",title:"Рисуем непопулярное аниме",material:"Блок Б ротации, следующий непройденный вариант",status:"plan",talking:true},
       ] },
     { d:18, wd:"Вс",
       darina:{type:"Ротация",title:"Аукцион на эскиз",material:"Рисует новый эскиз и отдаёт тому, кто предложит больше — нужно свежее действие, рисует специально под это",status:"wait"},
@@ -363,7 +376,7 @@ const WEEKS = [
 
 const OFF_DAYS = { 13: "Вт" };
 
-const STATUS_LABEL = { ready:"Готово к выкладке", edit:"На монтаже", record:"Записать", script:"Нужен текст/монтаж", wait:"Нужна съёмка" };
+const STATUS_LABEL = { ready:"Готово к выкладке", edit:"На монтаже", record:"Записать", script:"Нужен текст/монтаж", wait:"Нужна съёмка", plan:"В планах" };
 
 function escapeHtml(s){
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -428,6 +441,29 @@ function studioCell(row){
   return card('studio', row.studio, row.studio ? 'd'+row.d+'-studio' : null);
 }
 
+const ALL_DAYS = {};
+WEEKS.forEach(week => week.days.forEach(row => ALL_DAYS[row.d] = row));
+
+function talkingEntries(row){
+  if(!row) return [];
+  const list = [];
+  const check = e => { if(e && e.talking) list.push(e); };
+  check(row.darina);
+  if(Array.isArray(row.studio)) row.studio.forEach(check); else check(row.studio);
+  return list;
+}
+
+function talkingOwner(e){
+  return (e.type+' '+e.title).toLowerCase().includes('аниме') ? 'Настя' : 'юзер';
+}
+
+function reminderBlock(cur){
+  const items = talkingEntries(ALL_DAYS[cur+1]);
+  if(!items.length) return '';
+  const lines = items.map(e => `«${escapeHtml(e.title)}» — текст готовит <b>${talkingOwner(e)}</b>`).join('; ');
+  return `<div class="reminder">Завтра разговорный рилс: ${lines}. Нужно снять материал на завтра и заранее подготовить текст.</div>`;
+}
+
 function renderDays(){
   let html = '';
   WEEKS.forEach(week => {
@@ -450,6 +486,7 @@ function renderDays(){
             ${card('darina', row.darina, row.darina ? (row.darina.coauthor ? 'd'+row.d : 'd'+row.d+'-darina') : null)}
             ${studioCell(row)}
           </div>
+          ${reminderBlock(cur)}
         </div>`;
     }
   });
