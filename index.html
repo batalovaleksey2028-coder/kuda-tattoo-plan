@@ -24,6 +24,12 @@
     --wait-soft:#2c2416;
     --ready:#5a9a6f;
     --ready-soft:#1b2a20;
+    --you:#d1507f;
+    --you-soft:#2c1822;
+    --nastya:#4fc3d1;
+    --nastya-soft:#16282c;
+    --sasha:#a3c94f;
+    --sasha-soft:#232c16;
     color-scheme: dark;
   }
 
@@ -114,13 +120,18 @@
     margin-top:10px;
     font-size:12px;
     line-height:1.45;
-    color:var(--wait);
-    background:var(--wait-soft);
-    border:1px solid var(--wait);
+    color:var(--text-dim);
     border-radius:8px;
     padding:9px 12px;
   }
-  .reminder b{color:var(--text);}
+  .reminder b{font-weight:600;}
+  .reminder.you{background:var(--you-soft);}
+  .reminder.you b{color:var(--you);}
+  .reminder.nastya{background:var(--nastya-soft);}
+  .reminder.nastya b{color:var(--nastya);}
+  .reminder.sasha{background:var(--sasha-soft);}
+  .reminder.sasha b{color:var(--sasha);}
+  .reminder + .reminder{margin-top:6px;}
   @media (max-width:560px){
     .cards{grid-template-columns:1fr;}
     .day{grid-template-columns:48px 1fr;}
@@ -194,6 +205,22 @@
   .status.script{background:var(--write-soft);color:var(--write);}
   .status.wait{background:var(--wait-soft);color:var(--wait);}
   .status.plan{background:var(--studio-soft);color:var(--studio);}
+
+  .owner{
+    align-self:flex-start;
+    font-size:10.5px;
+    font-weight:600;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    padding:3px 8px;
+    border-radius:20px;
+    margin-top:2px;
+    margin-left:6px;
+  }
+  .owner.you{background:var(--you-soft);color:var(--you);}
+  .owner.nastya{background:var(--nastya-soft);color:var(--nastya);}
+  .owner.sasha{background:var(--sasha-soft);color:var(--sasha);}
+  .statusrow{display:flex;flex-wrap:wrap;gap:0;align-items:center;}
 
   .ref{
     font-size:12px;
@@ -271,6 +298,11 @@
       <span class="status edit" style="margin:0;">На монтаже</span>
       <span class="status script" style="margin:0;">Нужен текст/монтаж</span>
       <span class="status wait" style="margin:0;">Нужна съёмка</span>
+    </div>
+    <div class="legend">
+      <span class="owner you" style="margin:0;">Я</span>
+      <span class="owner nastya" style="margin:0;">Настя</span>
+      <span class="owner sasha" style="margin:0;">Саша</span>
     </div>
   </div>
 
@@ -378,6 +410,21 @@ const OFF_DAYS = { 13: "Вт" };
 
 const STATUS_LABEL = { ready:"Готово к выкладке", edit:"На монтаже", record:"Записать", script:"Нужен текст/монтаж", wait:"Нужна съёмка", plan:"В планах" };
 
+const OWNER_LABEL = { you:"Я", nastya:"Настя", sasha:"Саша" };
+
+function ownerFor(entry){
+  if(entry.status === 'edit') return 'sasha';
+  if(entry.status === 'script') return entry.type === 'Аниме-рубрика' ? 'nastya' : 'you';
+  if(entry.status === 'ready') return 'you';
+  return null;
+}
+
+function ownerBadge(entry){
+  const owner = ownerFor(entry);
+  if(!owner) return '';
+  return `<div class="owner ${owner}">${OWNER_LABEL[owner]}</div>`;
+}
+
 function escapeHtml(s){
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
@@ -415,7 +462,7 @@ function card(track, entry, id){
         <div class="type">${escapeHtml(entry.type)}</div>
         <div class="title">${escapeHtml(entry.title)}</div>
         <div class="material">${escapeHtml(entry.material)}</div>
-        <div class="status ${entry.status}">${STATUS_LABEL[entry.status]}</div>
+        <div class="statusrow"><div class="status ${entry.status}">${STATUS_LABEL[entry.status]}</div>${ownerBadge(entry)}</div>
         ${refBlock(entry)}
         ${scriptBlock(entry)}
       </div>
@@ -430,7 +477,7 @@ function studioCell(row){
         <div class="track studio"><i class="dot studio" style="width:7px;height:7px;border-radius:50%;background:currentColor;"></i>Студия</div>
         <div class="type">${escapeHtml(row.darina.type)} · Collab</div>
         <div class="title">${escapeHtml(row.darina.title)}</div>
-        <div class="status ${row.darina.status}">${STATUS_LABEL[row.darina.status]}</div>
+        <div class="statusrow"><div class="status ${row.darina.status}">${STATUS_LABEL[row.darina.status]}</div>${ownerBadge(row.darina)}</div>
         ${scriptBlock(row.darina)}
       </div>
     </div>`;
@@ -454,14 +501,16 @@ function talkingEntries(row){
 }
 
 function talkingOwner(e){
-  return (e.type+' '+e.title).toLowerCase().includes('аниме') ? 'Настя' : 'юзер';
+  return e.type === 'Аниме-рубрика' ? 'nastya' : 'you';
 }
 
 function reminderBlock(cur){
   const items = talkingEntries(ALL_DAYS[cur+1]);
   if(!items.length) return '';
-  const lines = items.map(e => `«${escapeHtml(e.title)}» — текст готовит <b>${talkingOwner(e)}</b>`).join('; ');
-  return `<div class="reminder">Завтра разговорный рилс: ${lines}. Нужно снять материал на завтра и заранее подготовить текст.</div>`;
+  return items.map(e => {
+    const owner = talkingOwner(e);
+    return `<div class="reminder ${owner}">Завтра «${escapeHtml(e.title)}» — текст готовит <b>${OWNER_LABEL[owner]}</b>, подготовить заранее. Материал снимаем сегодня.</div>`;
+  }).join('');
 }
 
 function renderDays(){
