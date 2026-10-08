@@ -16,14 +16,8 @@
     --studio-soft:#1c2a38;
     --edit:#3fa7a0;
     --edit-soft:#15302d;
-    --record:#d1824f;
-    --record-soft:#2c2016;
     --write:#9b7fd1;
     --write-soft:#241f36;
-    --wait:#c99a3d;
-    --wait-soft:#2c2416;
-    --ready:#5a9a6f;
-    --ready-soft:#1b2a20;
     --you:#d1507f;
     --you-soft:#2c1822;
     --nastya:#4fc3d1;
@@ -199,12 +193,8 @@
     border-radius:20px;
     margin-top:2px;
   }
-  .status.ready{background:var(--ready-soft);color:var(--ready);}
   .status.edit{background:var(--edit-soft);color:var(--edit);}
-  .status.record{background:var(--record-soft);color:var(--record);}
   .status.script{background:var(--write-soft);color:var(--write);}
-  .status.wait{background:var(--wait-soft);color:var(--wait);}
-  .status.plan{background:var(--studio-soft);color:var(--studio);}
 
   .owner{
     align-self:flex-start;
@@ -294,10 +284,8 @@
     <div class="legend">
       <span><i class="dot darina"></i>Дарина (личный)</span>
       <span><i class="dot studio"></i>Студия</span>
-      <span class="status ready" style="margin:0;">Готово к выкладке</span>
-      <span class="status edit" style="margin:0;">На монтаже</span>
-      <span class="status script" style="margin:0;">Нужен текст/монтаж</span>
-      <span class="status wait" style="margin:0;">Нужна съёмка</span>
+      <span class="status edit" style="margin:0;">Нужен монтаж</span>
+      <span class="status script" style="margin:0;">Нужен текст</span>
     </div>
     <div class="legend">
       <span class="owner you" style="margin:0;">Я</span>
@@ -317,7 +305,6 @@
         <div class="type">Карусель</div>
         <div class="title">«Заявка стать вашим мастером»</div>
         <div class="material">Не входит в её чек-лист форматов, поэтому убрана из расписания. Полностью готова (10 слайдов, текст, раскадровка) — ставим отдельно, когда решим, куда именно</div>
-        <div class="status ready">Готово к выкладке</div>
       </div>
       <div class="card empty">—</div>
     </div>
@@ -368,54 +355,53 @@ const WEEKS = [
   { label: "8 — 11 октября", days: [
     { d:8, wd:"Чт",
       darina:null,
-      studio:{type:"Ролик с тату",title:"Магическая битва — рукав JJK",material:"Сегодняшняя работа, перенос эскиза фиолетовым маркером поверх готового контура",status:"record",img:"jjk_screenshot.png"} },
+      studio:{type:"Ролик с тату",title:"Магическая битва — рукав JJK",material:"Сегодняшняя работа, перенос эскиза фиолетовым маркером поверх готового контура",status:"edit",img:"jjk_screenshot.png"} },
     { d:9, wd:"Пт",
-      darina:{type:"Базовый ролик",title:"Рукав — демон с красными рогами",material:"Новая готовая работа",status:"ready",img:"demon_rukav.png"},
-      studio:{type:"Подборка тату/эскизов",title:"Подборка последних работ #1",material:"Тот же набор, адаптация под студийный акк",status:"wait"} },
+      darina:{type:"Базовый ролик",title:"Рукав — демон с красными рогами",material:"Новая готовая работа",status:"edit",img:"demon_rukav.png"},
+      studio:{type:"Подборка тату/эскизов",title:"Подборка последних работ #1",material:"Тот же набор, адаптация под студийный акк",status:"edit"} },
     { d:10, wd:"Сб",
-      darina:{type:"Подборка тату",title:"Подборка последних работ",material:"Старые работы + она сама в кадре",status:"wait"},
+      darina:{type:"Подборка тату",title:"Подборка последних работ",material:"Старые работы + она сама в кадре",status:"edit"},
       studio:{type:"Аниме-рубрика",title:"Чему меня научило аниме",material:"Глубокие мысли про аниме, текст поверх вставок кадров из аниме, без начитки",status:"script",ref:REF_LESSON,talking:true} },
     { d:11, wd:"Вс",
       darina:null,
-      studio:{type:"Ролик с тату",title:"[под вопросом] Девушка в противогазе",material:"4 клипа сконвертированы в цвет, но ролик ещё не смонтирован — не гарантировано к этому дню, нужен запасной вариант если не успеем",status:"wait",img:"gachiakuta.jpg"} },
+      studio:{type:"Ролик с тату",title:"[под вопросом] Девушка в противогазе",material:"4 клипа сконвертированы в цвет, но ролик ещё не смонтирован — не гарантировано к этому дню, нужен запасной вариант если не успеем",status:"edit",img:"gachiakuta.jpg"} },
   ]},
   { label: "12 — 18 октября", days: [
     { d:12, wd:"Пн",
-      darina:{type:"Отзыв",title:"Отзыв клиента — зачитка + процесс",material:"Текст отзыва уже есть, вставить и смонтировать",status:"ready"},
+      darina:{type:"Отзыв",title:"Отзыв клиента — зачитка + процесс",material:"Текст отзыва уже есть, вставить и смонтировать",status:"edit"},
       studio:[
-        {type:"Подборка тату/эскизов",title:"Тематическая подборка эскизов",material:"Тема ещё не выбрана (по тайтлу/стилю/части тела — на усмотрение)",status:"wait"},
+        {type:"Подборка тату/эскизов",title:"Тематическая подборка эскизов",material:"Тема ещё не выбрана (по тайтлу/стилю/части тела — на усмотрение)",status:"edit"},
         {type:"Аниме-рубрика",title:"Что я гуглила сегодня — версия тату-мастера",material:"Имитация поисковой строки, 2-3 запроса",status:"script",ref:REF_GOOGLED,talking:true},
       ] },
     { d:14, wd:"Ср",
-      darina:{type:"Сериал · Эп.2",title:"Реализм, аниме, леттеринг, орнаментал, тонкие линии: это разные навыки",material:"Чек-лист выбора мастера в описании. Соавторство (Collab) — одна публикация сразу на оба аккаунта",status:"script",coauthor:true,script:EP2_SCRIPT,caption:EP2_CAPTION,shots:EP2_SHOTS} },
+      darina:{type:"Сериал · Эп.2",title:"Реализм, аниме, леттеринг, орнаментал, тонкие линии: это разные навыки",material:"Чек-лист выбора мастера в описании. Соавторство (Collab) — одна публикация сразу на оба аккаунта",status:"edit",coauthor:true,script:EP2_SCRIPT,caption:EP2_CAPTION,shots:EP2_SHOTS} },
     { d:15, wd:"Чт",
       darina:{type:"Базовый ролик",title:"Мирай Курияма — сакура",material:"12 клипов из бэклога, цветные акценты, готова к монтажу — последняя в бэклоге",status:"edit",img:"mirai.jpg"},
-      studio:{type:"До/после",title:"Формат до/после — готовая работа",material:"Не требует video-бэклога, только фото до и после одной из работ — закрывает дыру в тату-слоте без новой съёмки",status:"wait"} },
+      studio:{type:"До/после",title:"Формат до/после — готовая работа",material:"Не требует video-бэклога, только фото до и после одной из работ — закрывает дыру в тату-слоте без новой съёмки",status:"edit"} },
     { d:16, wd:"Пт",
-      darina:{type:"Подборка тату",title:"Подборка последних работ v2",material:"Старые работы + она сама в кадре",status:"wait"},
-      studio:{type:"Подборка тату/эскизов",title:"Подборка последних работ #3",material:"",status:"wait"} },
+      darina:{type:"Подборка тату",title:"Подборка последних работ v2",material:"Старые работы + она сама в кадре",status:"edit"},
+      studio:{type:"Подборка тату/эскизов",title:"Подборка последних работ #3",material:"",status:"edit"} },
     { d:17, wd:"Сб",
-      darina:{type:"Базовый ролик",title:"Darling in the Franxx — рукав манга-панелями",material:"Планируется новая съёмка этой тату на следующей неделе (сейчас есть только фото IMG_3543, тот же рукав что в резервной карусели)",status:"wait",img:"darling_franxx.jpg"},
+      darina:{type:"Базовый ролик",title:"Darling in the Franxx — рукав манга-панелями",material:"Планируется новая съёмка этой тату на следующей неделе (сейчас есть только фото IMG_3543, тот же рукав что в резервной карусели)",status:"edit",img:"darling_franxx.jpg"},
       studio:[
-        {type:"Аниме-рубрика",title:"Мнение об аниме по картинкам тату / подборка с подтекстом шутки",material:"Блок А ротации, следующий непройденный вариант",status:"plan",talking:true},
-        {type:"Аниме-рубрика",title:"Рисуем непопулярное аниме",material:"Блок Б ротации, следующий непройденный вариант",status:"plan",talking:true},
+        {type:"Аниме-рубрика",title:"Мнение об аниме по картинкам тату / подборка с подтекстом шутки",material:"Блок А ротации, следующий непройденный вариант",status:"script",talking:true},
+        {type:"Аниме-рубрика",title:"Рисуем непопулярное аниме",material:"Блок Б ротации, следующий непройденный вариант",status:"script",talking:true},
       ] },
     { d:18, wd:"Вс",
-      darina:{type:"Ротация",title:"Аукцион на эскиз",material:"Рисует новый эскиз и отдаёт тому, кто предложит больше — нужно свежее действие, рисует специально под это",status:"wait"},
-      studio:{type:"До/после",title:"Формат до/после — готовая работа #2",material:"Второй до/после на неделю, тоже без новой съёмки",status:"wait"} },
+      darina:{type:"Ротация",title:"Аукцион на эскиз",material:"Рисует новый эскиз и отдаёт тому, кто предложит больше — нужно свежее действие, рисует специально под это",status:"edit"},
+      studio:{type:"До/после",title:"Формат до/после — готовая работа #2",material:"Второй до/после на неделю, тоже без новой съёмки",status:"edit"} },
   ]},
 ];
 
 const OFF_DAYS = { 13: "Вт" };
 
-const STATUS_LABEL = { ready:"Готово к выкладке", edit:"На монтаже", record:"Записать", script:"Нужен текст/монтаж", wait:"Нужна съёмка", plan:"В планах" };
+const STATUS_LABEL = { edit:"Нужен монтаж", script:"Нужен текст" };
 
 const OWNER_LABEL = { you:"Я", nastya:"Настя", sasha:"Саша" };
 
 function ownerFor(entry){
   if(entry.status === 'edit') return 'sasha';
   if(entry.status === 'script') return entry.type === 'Аниме-рубрика' ? 'nastya' : 'you';
-  if(entry.status === 'ready') return 'you';
   return null;
 }
 
