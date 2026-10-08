@@ -183,34 +183,18 @@
   .title{font-size:14.5px;font-weight:600;text-wrap:balance;}
   .material{font-size:12.5px;color:var(--text-dim);}
 
-  .status{
+  .task{
     align-self:flex-start;
-    font-size:10.5px;
-    font-weight:600;
-    letter-spacing:.03em;
-    text-transform:uppercase;
-    padding:3px 8px;
+    font-size:11.5px;
+    font-weight:500;
+    padding:4px 10px;
     border-radius:20px;
     margin-top:2px;
   }
-  .status.edit{background:var(--edit-soft);color:var(--edit);}
-  .status.script{background:var(--write-soft);color:var(--write);}
-
-  .owner{
-    align-self:flex-start;
-    font-size:10.5px;
-    font-weight:600;
-    letter-spacing:.03em;
-    text-transform:uppercase;
-    padding:3px 8px;
-    border-radius:20px;
-    margin-top:2px;
-    margin-left:6px;
-  }
-  .owner.you{background:var(--you-soft);color:var(--you);}
-  .owner.nastya{background:var(--nastya-soft);color:var(--nastya);}
-  .owner.sasha{background:var(--sasha-soft);color:var(--sasha);}
-  .statusrow{display:flex;flex-wrap:wrap;gap:0;align-items:center;}
+  .task b{font-weight:700;text-transform:uppercase;letter-spacing:.03em;}
+  .task.you{background:var(--you-soft);color:var(--you);}
+  .task.nastya{background:var(--nastya-soft);color:var(--nastya);}
+  .task.sasha{background:var(--sasha-soft);color:var(--sasha);}
 
   .ref{
     font-size:12px;
@@ -284,13 +268,11 @@
     <div class="legend">
       <span><i class="dot darina"></i>Дарина (личный)</span>
       <span><i class="dot studio"></i>Студия</span>
-      <span class="status edit" style="margin:0;">Нужен монтаж</span>
-      <span class="status script" style="margin:0;">Нужен текст</span>
     </div>
     <div class="legend">
-      <span class="owner you" style="margin:0;">Леша</span>
-      <span class="owner nastya" style="margin:0;">Настя</span>
-      <span class="owner sasha" style="margin:0;">Саша</span>
+      <span class="task you" style="margin:0;">Монтаж · <b>Леша</b></span>
+      <span class="task sasha" style="margin:0;">Монтаж · <b>Саша</b></span>
+      <span class="task nastya" style="margin:0;">Текст · <b>Настя</b></span>
     </div>
   </div>
 
@@ -395,7 +377,7 @@ const WEEKS = [
 
 const OFF_DAYS = { 13: "Вт" };
 
-const STATUS_LABEL = { edit:"Нужен монтаж", script:"Нужен текст" };
+const TASK_LABEL = { edit:"Монтаж", script:"Текст" };
 
 const OWNER_LABEL = { you:"Леша", nastya:"Настя", sasha:"Саша" };
 
@@ -405,10 +387,10 @@ function ownerFor(track, entry){
   return null;
 }
 
-function ownerBadge(track, entry){
+function taskBadge(track, entry){
   const owner = ownerFor(track, entry);
   if(!owner) return '';
-  return `<div class="owner ${owner}">${OWNER_LABEL[owner]}</div>`;
+  return `<div class="task ${owner}">${TASK_LABEL[entry.status]} · <b>${OWNER_LABEL[owner]}</b></div>`;
 }
 
 function escapeHtml(s){
@@ -448,7 +430,7 @@ function card(track, entry, id){
         <div class="type">${escapeHtml(entry.type)}</div>
         <div class="title">${escapeHtml(entry.title)}</div>
         <div class="material">${escapeHtml(entry.material)}</div>
-        <div class="statusrow"><div class="status ${entry.status}">${STATUS_LABEL[entry.status]}</div>${ownerBadge(track, entry)}</div>
+        ${taskBadge(track, entry)}
         ${refBlock(entry)}
         ${scriptBlock(entry)}
       </div>
@@ -463,7 +445,7 @@ function studioCell(row){
         <div class="track studio"><i class="dot studio" style="width:7px;height:7px;border-radius:50%;background:currentColor;"></i>Студия</div>
         <div class="type">${escapeHtml(row.darina.type)} · Collab</div>
         <div class="title">${escapeHtml(row.darina.title)}</div>
-        <div class="statusrow"><div class="status ${row.darina.status}">${STATUS_LABEL[row.darina.status]}</div>${ownerBadge('darina', row.darina)}</div>
+        ${taskBadge('darina', row.darina)}
         ${scriptBlock(row.darina)}
       </div>
     </div>`;
