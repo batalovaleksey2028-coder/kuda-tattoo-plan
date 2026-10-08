@@ -419,7 +419,6 @@ function trackerHtml(id){
   const s = statusMap[id] || {recorded:false, posted:false};
   return `<div class="tracker">
     <button type="button" class="toggle ${s.recorded?'on':''}" onclick="toggleStatus('${id}','recorded')">${s.recorded?'✓ Записано':'Записано?'}</button>
-    <button type="button" class="toggle ${s.posted?'on':''}" onclick="toggleStatus('${id}','posted')">${s.posted?'✓ Выложено':'Выложено?'}</button>
   </div>`;
 }
 
