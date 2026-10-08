@@ -477,7 +477,7 @@ function reminderBlock(cur){
   if(!items.length) return '';
   return items.map(e => {
     const owner = talkingOwner(e);
-    return `<div class="reminder ${owner}">Завтра «${escapeHtml(e.title)}» — текст готовит <b>${OWNER_LABEL[owner]}</b>, подготовить заранее. Материал снимаем сегодня.</div>`;
+    return `<div class="reminder ${owner}">Завтра «${escapeHtml(e.title)}» — текст готовит <b>${OWNER_LABEL[owner]}</b>, подготовить заранее.</div>`;
   }).join('');
 }
 
