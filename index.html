@@ -1,0 +1,520 @@
+<title>Контент-план kuda_tattoo</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;500;600;700&display=swap');
+
+  :root{
+    /* layout: two-column day rows, date on the left, Дарина/Студия cards on the right */
+    --bg:#15110f;
+    --surface:#1e1815;
+    --surface-2:#251e1a;
+    --text:#f2ece2;
+    --text-dim:#a99a8c;
+    --line:#362d27;
+    --darina:#e2432f;
+    --darina-soft:#3a211c;
+    --studio:#4f8fd1;
+    --studio-soft:#1c2a38;
+    --edit:#3fa7a0;
+    --edit-soft:#15302d;
+    --record:#d1824f;
+    --record-soft:#2c2016;
+    --write:#9b7fd1;
+    --write-soft:#241f36;
+    --wait:#c99a3d;
+    --wait-soft:#2c2416;
+    --ready:#5a9a6f;
+    --ready-soft:#1b2a20;
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    margin:0;
+    padding-inline:16px;
+    font-family:'Work Sans',system-ui,sans-serif;
+    line-height:1.5;
+  }
+
+  .wrap{max-width:900px;margin:0 auto;padding-block:32px 64px;}
+
+  .masthead{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    padding-bottom:20px;
+    margin-bottom:28px;
+    border-bottom:1px solid var(--line);
+  }
+  .eyebrow{
+    font-family:'Bebas Neue',sans-serif;
+    letter-spacing:.14em;
+    font-size:13px;
+    color:var(--darina);
+    text-transform:uppercase;
+  }
+  h1{
+    font-family:'Bebas Neue',sans-serif;
+    font-weight:400;
+    font-size:clamp(32px,6vw,48px);
+    letter-spacing:.01em;
+    margin:0;
+    text-wrap:balance;
+  }
+  .sub{color:var(--text-dim);font-size:14.5px;max-width:62ch;}
+
+  .legend{
+    display:flex;
+    flex-wrap:wrap;
+    gap:18px;
+    margin-top:16px;
+    font-size:13px;
+    color:var(--text-dim);
+  }
+  .legend span{display:inline-flex;align-items:center;gap:7px;}
+  .dot{width:9px;height:9px;border-radius:50%;flex:none;}
+  .dot.darina{background:var(--darina);}
+  .dot.studio{background:var(--studio);}
+
+  .weekhead{
+    font-family:'Bebas Neue',sans-serif;
+    letter-spacing:.08em;
+    font-size:15px;
+    color:var(--text-dim);
+    text-transform:uppercase;
+    margin:28px 0 4px;
+  }
+
+  .day{
+    display:grid;
+    grid-template-columns:62px 1fr;
+    gap:16px;
+    padding-block:22px;
+    border-bottom:1px solid var(--line);
+  }
+  .day:last-child{border-bottom:none;}
+  .daynum{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:34px;
+    line-height:1;
+    color:var(--text-dim);
+    padding-top:2px;
+  }
+  .daynum small{display:block;font-family:'Work Sans',sans-serif;font-size:11px;line-height:1.3;letter-spacing:0;color:var(--text-dim);margin-top:6px;}
+  .cards{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    min-width:0;
+  }
+  .stack{display:flex;flex-direction:column;gap:12px;min-width:0;}
+  @media (max-width:560px){
+    .cards{grid-template-columns:1fr;}
+    .day{grid-template-columns:48px 1fr;}
+    .daynum small{font-size:10px;}
+    .daynum{font-size:26px;}
+  }
+
+  .card{
+    background:var(--surface);
+    border-radius:10px;
+    padding:14px 15px;
+    border:1px solid var(--line);
+    display:flex;
+    flex-direction:row;
+    gap:11px;
+    min-width:0;
+  }
+  .card-body{
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+    min-width:0;
+    flex:1;
+  }
+  .thumb{
+    width:88px;
+    height:88px;
+    border-radius:8px;
+    object-fit:cover;
+    flex:none;
+    border:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .card.empty{
+    background:transparent;
+    border:1px dashed var(--line);
+    color:var(--text-dim);
+    font-size:13px;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+  }
+  .track{
+    font-family:'Bebas Neue',sans-serif;
+    letter-spacing:.1em;
+    font-size:11.5px;
+    text-transform:uppercase;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .track.darina{color:var(--darina);}
+  .track.studio{color:var(--studio);}
+  .type{font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.04em;}
+  .title{font-size:14.5px;font-weight:600;text-wrap:balance;}
+  .material{font-size:12.5px;color:var(--text-dim);}
+
+  .status{
+    align-self:flex-start;
+    font-size:10.5px;
+    font-weight:600;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    padding:3px 8px;
+    border-radius:20px;
+    margin-top:2px;
+  }
+  .status.ready{background:var(--ready-soft);color:var(--ready);}
+  .status.edit{background:var(--edit-soft);color:var(--edit);}
+  .status.record{background:var(--record-soft);color:var(--record);}
+  .status.script{background:var(--write-soft);color:var(--write);}
+  .status.wait{background:var(--wait-soft);color:var(--wait);}
+
+  .ref{
+    font-size:12px;
+    margin-top:2px;
+  }
+  .ref a{color:var(--studio);text-decoration:none;border-bottom:1px solid currentColor;}
+  .ref a:hover{opacity:.8;}
+  .ref .label{color:var(--text-dim);margin-right:4px;}
+
+  details.script{margin-top:2px;}
+  details.script summary{
+    cursor:pointer;
+    font-size:11.5px;
+    color:var(--text-dim);
+    list-style:none;
+  }
+  details.script summary::-webkit-details-marker{display:none;}
+  details.script summary::before{content:"▸ ";}
+  details.script[open] summary::before{content:"▾ ";}
+  .vo{
+    font-size:12.5px;
+    font-style:italic;
+    color:var(--text);
+    background:var(--surface-2);
+    border-left:2px solid var(--darina);
+    padding:8px 10px;
+    margin-top:8px;
+    border-radius:4px;
+    white-space:pre-line;
+  }
+  .caption{
+    font-size:12.5px;
+    color:var(--text);
+    background:var(--surface-2);
+    border-left:2px solid var(--studio);
+    padding:8px 10px;
+    margin-top:8px;
+    border-radius:4px;
+    white-space:pre-line;
+  }
+  .shotlist{margin-top:8px;display:flex;flex-direction:column;gap:5px;}
+  .shot{font-size:11.5px;color:var(--text);}
+  .shothead{font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-dim);border-bottom:1px solid var(--line);padding-bottom:3px;margin-top:8px;}
+
+  .tracker{display:flex;gap:6px;margin-top:8px;}
+  .toggle{
+    flex:1;
+    font-family:'Work Sans',sans-serif;
+    font-size:10.5px;
+    font-weight:600;
+    letter-spacing:.02em;
+    text-transform:uppercase;
+    padding:6px 8px;
+    border-radius:6px;
+    border:1px solid var(--line);
+    background:transparent;
+    color:var(--text-dim);
+    cursor:pointer;
+    transition:background .15s,color .15s,border-color .15s;
+    min-width:0;
+  }
+  .toggle:hover{border-color:var(--text-dim);}
+  .toggle.on{background:var(--ready-soft);color:var(--ready);border-color:var(--ready);}
+
+  .offday{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding-block:14px;
+    border-bottom:1px solid var(--line);
+    color:var(--text-dim);
+    font-size:13px;
+  }
+  .offday .daynum{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--text-dim);}
+
+  footer{
+    margin-top:36px;
+    padding-top:18px;
+    border-top:1px solid var(--line);
+    font-size:12.5px;
+    color:var(--text-dim);
+  }
+</style>
+
+<div class="wrap">
+
+  <div class="masthead">
+    <div class="eyebrow">kuda_tattoo · SMM</div>
+    <h1>Контент-план: неделя с 8 октября</h1>
+    <p class="sub">На пн-ср у Дарины уже вышли 1 тату-ролик, 1 подборка и Эп.1 — закрывают квоту недели по этим трём пунктам. Ниже только то, что осталось: второй тату-ролик и карусель вместо ротации (отзыв решили перенести на понедельник следующей недели). Студия считается отдельно: 2 ролика с тату + 2 подборки + 2 аниме-рубрики в неделю. Вторник — выходной, публикаций нет.</p>
+    <div class="legend">
+      <span><i class="dot darina"></i>Дарина (личный)</span>
+      <span><i class="dot studio"></i>Студия</span>
+      <span class="status ready" style="margin:0;">Готово к выкладке</span>
+      <span class="status edit" style="margin:0;">На монтаже</span>
+      <span class="status script" style="margin:0;">Нужен текст/монтаж</span>
+      <span class="status wait" style="margin:0;">Нужна съёмка</span>
+    </div>
+  </div>
+
+  <div id="days"></div>
+
+  <div class="weekhead">Резерв (вне плана, не на конкретную дату)</div>
+  <div class="day">
+    <div class="daynum">—</div>
+    <div class="cards">
+      <div class="card">
+        <div class="track darina"><i class="dot darina" style="width:7px;height:7px;border-radius:50%;background:currentColor;"></i>Дарина</div>
+        <div class="type">Карусель</div>
+        <div class="title">«Заявка стать вашим мастером»</div>
+        <div class="material">Не входит в её чек-лист форматов, поэтому убрана из расписания. Полностью готова (10 слайдов, текст, раскадровка) — ставим отдельно, когда решим, куда именно</div>
+        <div class="status ready">Готово к выкладке</div>
+      </div>
+      <div class="card empty">—</div>
+    </div>
+  </div>
+
+  <footer>
+    <b>Это новый план, старые ссылки-календари больше не актуальны.</b> Мирай Курияма (сакура, 12 клипов, уже готова к монтажу) не нужна на этой неделе — тату-квота закрыта Ренгоку, переносим её на старт следующей недели. На 11 октября у студии уже нет свежей тату-работы — нужна новая съёмка до конца недели. Про тату в противогазе: сырья под процесс всего 4 клипа (3 макро + 1 стирание пены), остальное — облёты готовой работы, учтено в монтаже. Девочек студии по-прежнему не показываем до Эп.3 сериала.
+  </footer>
+
+</div>
+
+<script>
+const REF_THOUGHTS = [
+  "instagram.com/reel/DaRZ1S8S0h3",
+];
+const REF_GOOGLED = [
+  "instagram.com/reel/DdyGzgJoO8x",
+];
+
+const EP2_SCRIPT = "Реализм, аниме, леттеринг, орнаментал, тонкие линии: это разные навыки.\n\nЭто как попросить кондитера приготовить хамон.\n\nМожет, он и приготовит.\n\nНо я всё-таки пойду к человеку, который специализируется на мясе.\n\nПоэтому, если вы выбираете себе тату-мастера, я бы смотрела не только на три красивые фотографии в закрепе.\n\nПосмотри, рисует ли он сам, зажившие работы и есть ли у него стиль.\n\nИ главное: как он относится к тому, чего пока не умеет.\n\nПотому что хороший мастер не обязательно умеет всё.\n\nХороший мастер очень хорошо понимает, чего он не умеет.\n\nИ забавно, но именно по этим же признакам я сейчас выбираю людей в свою новую студию.\n\nПосле первого провала я решила больше не искать просто красивое портфолио.\n\nМне нужны люди, которые способны стать реально сильными мастерами.\n\nЯ выбрала троих, но останутся только двое. Продолжим отбор в следующих сериях, а чек-лист я закрепила для тебя в описании.";
+
+const EP2_SHOTS = [
+  "Дарина говорит на камеру, средний план, спокойный уверенный тон",
+  "На «реализм, аниме, леттеринг, орнаментал, тонкие линии»: быстрая нарезка примеров каждого стиля из архива",
+  "На аналогию с кондитером и хамоном: держим кадр на Дарине, без иллюстрации, фраза сама смешная",
+  "На «рисует ли он сам, зажившие работы, стиль»: три пункта чек-листа текстом на экране по одному",
+  "На «чего он не умеет»: Дарина смотрит прямо в камеру, пауза",
+  "Финал на фразе про троих кандидатов",
+  "Титр: «Чек-лист в описании»",
+];
+
+const CAROUSEL_SCRIPT = "Слайд 1, обложка. Селфи в студии, стикеры-вырезки вокруг, стрелка на тату. Текст: «Привет! Меня зовут Дарина, и это моя заявка стать вашим тату-мастером».\n\nСлайд 2. Коллаж из 4 готовых работ. Текст: «Бью аниме для тех, кто в теме. Манга-панели, дотворк, красные акценты, это моё».\n\nСлайд 3. Фон в клетку, 1-2 фото процесса. Текст: «Как я работаю: сначала эскиз в манга-панелях, потом перенос на кожу, потом набивка. Никаких «просто срисую из гугла»».\n\nСлайд 4. Коллаж из 5 любимых работ. Подпись: «Немного любимого».\n\nСлайд 5. Фото из студии или города. Текст: «Запись: [город и окно записи]. Пишите в директ».\n\nСлайд 6. Фон в клетку, личные предметы стикерами. Текст: «Можно часами говорить со мной про аниме и мангу, я такая же фанатка».\n\nСлайд 7, финал. Второе селфи, стикер-кнопка «Start». Текст: «Хочешь тату у меня? Пиши в директ. А сохранить и отправить другу это лучший способ меня поддержать».";
+
+const CAROUSEL_SHOTS = [
+  "Два селфи в студии для слайдов 1 и 7, свет ровный, в кадре видно тату на руках",
+  "Только уже выложенные работы: рукав Фрирен, Резе, Аясе+Окарун, Zero Two, Ренгоку, Мирай Курияма — выбрать 5-6 без спойлера ещё не вышедших",
+  "Стикеры-вырезки из своих вещей: 4-6 предметов (фигурки, мерч, напиток, манга) сфотографировать на светлом фоне и вырезать",
+  "Фон в клетку под блокнот для слайдов 3 и 6, милые стикеры и пиксельные элементы",
+  "Рукописный шрифт с кириллицей (например Caveat), белый текст на фото, тёмный на клетке",
+  "Стикер кнопки «Start» в стиле старого Windows для последнего слайда",
+];
+
+const CAROUSEL_CAPTION = "Это моя заявка стать вашим тату-мастером.\n\nБью аниме: манга-панели, дотворк, красные акценты. Если вы в теме, мы точно найдём общий язык.\n\nЗапись: [окно записи], пишите в директ.\n\nСохраните и отправьте другу, которому давно пора набить любимого персонажа.";
+
+const EP2_CAPTION = "Как выбрать тату-мастера, короткий чек-лист:\n\n1. Рисует ли он сам, а не только копирует.\n2. Есть зажившие работы, не только свежие фото.\n3. Есть свой узнаваемый стиль.\n4. Признаёт, чего пока не умеет, а не берётся за всё подряд.\n\nПо этим же критериям я сейчас выбираю мастеров в свою студию. Выбрала троих, останутся только двое. Продолжение в следующих сериях.";
+
+const WEEKS = [
+  { label: "8 — 11 октября", days: [
+    { d:8, wd:"Чт",
+      darina:null,
+      studio:{type:"Ролик с тату",title:"Магическая битва — рукав JJK",material:"Сегодняшняя работа, перенос эскиза фиолетовым маркером поверх готового контура",status:"record",img:"jjk_screenshot.png"} },
+    { d:9, wd:"Пт",
+      darina:{type:"Подборка тату",title:"Подборка последних работ",material:"Старые работы + она сама в кадре",status:"wait"},
+      studio:{type:"Подборка тату/эскизов",title:"Подборка последних работ #1",material:"Тот же набор, адаптация под студийный акк",status:"wait"} },
+    { d:10, wd:"Сб",
+      darina:null,
+      studio:{type:"Аниме-рубрика",title:"Мысли, в которых зритель узнаёт себя",material:"Текст поверх аниме-кадров, без начитки, 4-5 фраз",status:"script",ref:REF_THOUGHTS} },
+    { d:11, wd:"Вс",
+      darina:null,
+      studio:[
+        {type:"Ролик с тату",title:"[под вопросом] Девушка в противогазе",material:"4 клипа сконвертированы в цвет, но ролик ещё не смонтирован — не гарантировано к этому дню, нужен запасной вариант если не успеем",status:"wait",img:"gachiakuta.jpg"},
+        {type:"Аниме-рубрика",title:"Что я гуглила сегодня — версия тату-мастера",material:"Имитация поисковой строки, 2-3 запроса",status:"script",ref:REF_GOOGLED},
+      ] },
+  ]},
+  { label: "12 — 18 октября", days: [
+    { d:12, wd:"Пн",
+      darina:{type:"Отзыв",title:"Отзыв клиента — зачитка + процесс",material:"Текст отзыва уже есть, вставить и смонтировать",status:"ready"},
+      studio:{type:"Подборка тату/эскизов",title:"Тематическая подборка эскизов",material:"Тема ещё не выбрана (по тайтлу/стилю/части тела — на усмотрение)",status:"wait"} },
+    { d:14, wd:"Ср",
+      darina:{type:"Сериал · Эп.2",title:"Реализм, аниме, леттеринг, орнаментал, тонкие линии: это разные навыки",material:"Чек-лист выбора мастера в описании. Соавторство (Collab) — одна публикация сразу на оба аккаунта",status:"script",coauthor:true,script:EP2_SCRIPT,caption:EP2_CAPTION,shots:EP2_SHOTS} },
+    { d:15, wd:"Чт",
+      darina:{type:"Базовый ролик",title:"Мирай Курияма — сакура",material:"12 клипов из бэклога, цветные акценты, готова к монтажу — последняя в бэклоге",status:"edit",img:"mirai.jpg"},
+      studio:{type:"До/после",title:"Формат до/после — готовая работа",material:"Не требует video-бэклога, только фото до и после одной из работ — закрывает дыру в тату-слоте без новой съёмки",status:"wait"} },
+    { d:16, wd:"Пт",
+      darina:{type:"Подборка тату",title:"Подборка последних работ v2",material:"Старые работы + она сама в кадре",status:"wait"},
+      studio:{type:"Подборка тату/эскизов",title:"Подборка последних работ #3",material:"",status:"wait"} },
+    { d:17, wd:"Сб",
+      darina:{type:"Базовый ролик",title:"Darling in the Franxx — рукав манга-панелями",material:"Планируется новая съёмка этой тату на следующей неделе (сейчас есть только фото IMG_3543, тот же рукав что в резервной карусели)",status:"wait",img:"darling_franxx.jpg"},
+      studio:[
+        {type:"Аниме-рубрика",title:"Мнение об аниме по картинкам тату / подборка с подтекстом шутки",material:"Блок А ротации, следующий непройденный вариант",status:"plan"},
+        {type:"Аниме-рубрика",title:"Рисуем непопулярное аниме",material:"Блок Б ротации, следующий непройденный вариант",status:"plan"},
+      ] },
+    { d:18, wd:"Вс",
+      darina:{type:"Ротация",title:"Аукцион на эскиз",material:"Рисует новый эскиз и отдаёт тому, кто предложит больше — нужно свежее действие, рисует специально под это",status:"wait"},
+      studio:{type:"До/после",title:"Формат до/после — готовая работа #2",material:"Второй до/после на неделю, тоже без новой съёмки",status:"wait"} },
+  ]},
+];
+
+const OFF_DAYS = { 13: "Вт" };
+
+const STATUS_LABEL = { ready:"Готово к выкладке", edit:"На монтаже", record:"Записать", script:"Нужен текст/монтаж", wait:"Нужна съёмка" };
+
+let statusMap = {};
+let dbNS = null;
+
+function escapeHtml(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function refBlock(entry){
+  if(!entry.ref || !entry.ref.length) return '';
+  return `<div class="ref"><span class="label">Референс:</span>` + entry.ref.map(r =>
+    `<a href="https://${r}" target="_blank" rel="noopener">${r.replace('instagram.com/reel/','ig: ')}</a>`
+  ).join(', ') + `</div>`;
+}
+
+function scriptBlock(entry){
+  if(!entry.script && !entry.shots && !entry.caption) return '';
+  let inner = '';
+  if(entry.script) inner += `<div class="vo">${escapeHtml(entry.script)}</div>`;
+  if(entry.caption){
+    inner += `<div class="shothead">Текст к публикации</div>`;
+    inner += `<div class="caption">${escapeHtml(entry.caption)}</div>`;
+  }
+  if(entry.shots){
+    inner += `<div class="shothead">Нужные кадры</div>`;
+    inner += `<div class="shotlist">` + entry.shots.map(s => `<div class="shot">• ${escapeHtml(s)}</div>`).join('') + `</div>`;
+  }
+  return `<details class="script"><summary>Текст и раскадровка</summary>${inner}</details>`;
+}
+
+function trackerHtml(id){
+  if(!id) return '';
+  const s = statusMap[id] || {recorded:false, posted:false};
+  return `<div class="tracker">
+    <button type="button" class="toggle ${s.recorded?'on':''}" onclick="toggleStatus('${id}','recorded')">${s.recorded?'✓ Записано':'Записано?'}</button>
+    <button type="button" class="toggle ${s.posted?'on':''}" onclick="toggleStatus('${id}','posted')">${s.posted?'✓ Выложено':'Выложено?'}</button>
+  </div>`;
+}
+
+function card(track, entry, id){
+  if(!entry) return `<div class="card empty">—</div>`;
+  const thumb = entry.img ? `<img class="thumb" src="${entry.img}" alt="">` : '';
+  return `
+    <div class="card">
+      ${thumb}
+      <div class="card-body">
+        <div class="track ${track}"><i class="dot ${track}" style="width:7px;height:7px;border-radius:50%;background:currentColor;"></i>${track==='darina'?'Дарина':'Студия'}</div>
+        <div class="type">${escapeHtml(entry.type)}</div>
+        <div class="title">${escapeHtml(entry.title)}</div>
+        <div class="material">${escapeHtml(entry.material)}</div>
+        <div class="status ${entry.status}">${STATUS_LABEL[entry.status]}</div>
+        ${refBlock(entry)}
+        ${scriptBlock(entry)}
+        ${trackerHtml(id)}
+      </div>
+    </div>`;
+}
+
+function studioCell(row){
+  if(row.darina && row.darina.coauthor){
+    const id = 'd'+row.d;
+    return `<div class="card">
+      <div class="card-body">
+        <div class="track studio"><i class="dot studio" style="width:7px;height:7px;border-radius:50%;background:currentColor;"></i>Студия</div>
+        <div class="type">${escapeHtml(row.darina.type)} · Collab</div>
+        <div class="title">${escapeHtml(row.darina.title)}</div>
+        <div class="status ${row.darina.status}">${STATUS_LABEL[row.darina.status]}</div>
+        ${scriptBlock(row.darina)}
+        ${trackerHtml(id)}
+      </div>
+    </div>`;
+  }
+  if(Array.isArray(row.studio)){
+    return `<div class="stack">` + row.studio.map((e,i) => card('studio', e, 'd'+row.d+'-studio'+i)).join('') + `</div>`;
+  }
+  return card('studio', row.studio, row.studio ? 'd'+row.d+'-studio' : null);
+}
+
+function renderDays(){
+  let html = '';
+  WEEKS.forEach(week => {
+    html += `<div class="weekhead">${week.label}</div>`;
+    let d = week.days[0].d;
+    const lastD = week.days[week.days.length-1].d;
+    const byDay = {};
+    week.days.forEach(row => byDay[row.d] = row);
+    for(let cur = d; cur <= lastD; cur++){
+      if(OFF_DAYS[cur]){
+        html += `<div class="offday"><span class="daynum">${String(cur).padStart(2,'0')}</span><span>${OFF_DAYS[cur]} — выходной, публикаций нет</span></div>`;
+        continue;
+      }
+      const row = byDay[cur];
+      if(!row) continue;
+      html += `
+        <div class="day">
+          <div class="daynum">${String(row.d).padStart(2,'0')}<small>${row.wd}</small></div>
+          <div class="cards">
+            ${card('darina', row.darina, row.darina ? (row.darina.coauthor ? 'd'+row.d : 'd'+row.d+'-darina') : null)}
+            ${studioCell(row)}
+          </div>
+        </div>`;
+    }
+  });
+  document.getElementById('days').innerHTML = html;
+}
+
+async function toggleStatus(id, field){
+  const cur = statusMap[id] || {recorded:false, posted:false};
+  const next = { recorded: cur.recorded||false, posted: cur.posted||false };
+  next[field] = !next[field];
+  statusMap[id] = next;
+  renderDays();
+  if(!dbNS) return;
+  try{ await dbNS.doc('status/'+id).set(next); }
+  catch(e){ /* live snapshot will resync on next delivery */ }
+}
+
+async function initDb(){
+  if(!window.claude || !window.claude.use) return;
+  try{
+    dbNS = await window.claude.use('db');
+    if(!dbNS) return;
+    dbNS.collection('status').onSnapshot(function(snap){
+      const map = {};
+      snap.docs.forEach(function(d){ map[d.id] = d.data(); });
+      statusMap = map;
+      renderDays();
+    });
+  }catch(e){ /* db unavailable in this view — tracker stays local-only */ }
+}
+
+renderDays();
+initDb();
+</script>
