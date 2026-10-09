@@ -345,7 +345,7 @@ const WEEKS = [
       darina:null,
       studio:[
         {type:"Ролик с тату",title:"Кицунэ в дыму — бок",material:"Готовая работа, чёрно-красная графика, фото из архива — IMG_9855",status:"edit",img:"kitsune_nastya.jpg"},
-        {type:"Подборка тату/эскизов",title:"Эскизы на практик-коже — Тихиро и Хаку + ещё дизайны",material:"3 эскиза на тренировочной коже (Унесённые призраками и др.), фото из архива — IMG_8654",status:"edit",img:"img_8654_eskizy.jpg"},
+        {type:"Подборка тату/эскизов",title:"Эскизы на практик-коже — Тихиро и Хаку + ещё дизайны",material:"3 эскиза на тренировочной коже (Унесённые призраками и др.), фото из архива — IMG_8654",status:"edit",img:"img_8654_eskizy.jpg",owner:"you"},
       ] },
     { d:14, wd:"Ср",
       darina:{type:"Сериал · Эп.2",title:"Реализм, аниме, леттеринг, орнаментал, тонкие линии: это разные навыки",material:"Чек-лист выбора мастера в описании. Соавторство (Collab) — одна публикация сразу на оба аккаунта",status:"edit",coauthor:true,script:EP2_SCRIPT,caption:EP2_CAPTION,shots:EP2_SHOTS} },
@@ -379,6 +379,7 @@ const OWNER_LABEL = { you:"Леша", nastya:"Настя", sasha:"Саша" };
 const SASHA_TYPES = ['Ролик с тату', 'Подборка тату/эскизов'];
 
 function ownerFor(track, entry){
+  if(entry.owner) return entry.owner;
   if(entry.status === 'edit'){
     if(track === 'darina') return 'you';
     return SASHA_TYPES.includes(entry.type) ? 'sasha' : 'you';
