@@ -367,10 +367,7 @@ const WEEKS = [
       studio:{type:"Ролик с тату",title:"Аниме-девушка с кошачьими ушками: рукав",material:"Готовая работа, reveal стирания пены, фото из архива: IMG_4164",status:"edit",img:"neko_girl_nastya.jpg"} },
     { d:11, wd:"Вс",
       darina:null,
-      studio:[
-        {type:"Ролик с тату",title:"[под вопросом] Девушка в противогазе",material:"4 клипа сконвертированы в цвет, но ролик ещё не смонтирован. Не гарантировано к этому дню, нужен запасной вариант если не успеем",status:"edit",img:"gachiakuta.jpg"},
-        {type:"Аниме-рубрика",title:"Чему меня научило аниме",material:"Глубокие мысли про аниме, текст поверх вставок кадров из аниме, без начитки. Перенесено с субботы",status:"script",ref:REF_LESSON,talking:true},
-      ] },
+      studio:{type:"Ролик с тату",title:"[под вопросом] Девушка в противогазе",material:"4 клипа сконвертированы в цвет, но ролик ещё не смонтирован. Не гарантировано к этому дню, нужен запасной вариант если не успеем",status:"edit",img:"gachiakuta.jpg"} },
   ]},
   { label: "12–18 октября", days: [
     { d:12, wd:"Пн",
@@ -387,7 +384,11 @@ const WEEKS = [
         {type:"Аниме-рубрика",title:"Типы клиентов",material:"Типы клиентов через призму аниме, сценарий от Насти. Перенесено с субботы",status:"script",ref:REF_CLIENT_TYPES,talking:true,nextOwner:"nastya"},
       ] },
     { d:14, wd:"Ср",
-      darina:{type:"Сериал · Эп.2",title:"Реализм, аниме, леттеринг, орнаментал, тонкие линии: это разные навыки",material:"Чек-лист выбора мастера в описании. Соавторство (Collab): одна публикация сразу на оба аккаунта",status:"edit",coauthor:true,script:EP2_SCRIPT,caption:EP2_CAPTION,shots:EP2_SHOTS} },
+      darina:{type:"Сериал · Эп.2",title:"Реализм, аниме, леттеринг, орнаментал, тонкие линии: это разные навыки",material:"Чек-лист выбора мастера в описании. Соавторство (Collab): одна публикация сразу на оба аккаунта",status:"edit",coauthor:true,script:EP2_SCRIPT,caption:EP2_CAPTION,shots:EP2_SHOTS},
+      studio:[
+        {type:"Аниме-рубрика",title:"Чему меня научило аниме",material:"Глубокие мысли про аниме, текст поверх вставок кадров из аниме, без начитки. Перенесено с воскресенья",status:"script",ref:REF_LESSON,talking:true},
+        {type:"Аниме-рубрика",title:"Шуточный пост про аниме #2",material:"Идея и сценарий от Насти, детали уточняются. Перенесено с субботы",status:"script",talking:true},
+      ] },
     { d:15, wd:"Чт",
       darina:{type:"Базовый ролик",title:"Мирай Курияма: сакура",material:"12 клипов из бэклога, цветные акценты, готова к монтажу, последняя в бэклоге",status:"edit",img:"mirai.jpg"},
       studio:[
@@ -399,13 +400,10 @@ const WEEKS = [
       studio:[
         {type:"Подборка тату/эскизов",title:"Подборка последних работ #3",material:"Тема ещё не выбрана",status:"edit"},
         {type:"Ролик с тату",title:"Рукав: персонаж с механической рукой",material:"Готовая работа, панель с красными акцентами. Тату-мастер студии: Настя",status:"edit",img:"nastya_master_rukav.png"},
+        {type:"Аниме-рубрика",title:"Мнение об аниме по картинкам тату / подборка с подтекстом шутки",material:"Блок А ротации, следующий непройденный вариант. Перенесено с субботы",status:"script",ref:REF_OPINION,talking:true,nextOwner:"nastya"},
       ] },
     { d:17, wd:"Сб",
-      darina:{type:"Базовый ролик",title:"Darling in the Franxx: рукав манга-панелями",material:"Планируется новая съёмка этой тату на следующей неделе (сейчас есть только фото IMG_3543, тот же рукав что в резервной карусели)",status:"edit",img:"darling_franxx.jpg"},
-      studio:[
-        {type:"Аниме-рубрика",title:"Мнение об аниме по картинкам тату / подборка с подтекстом шутки",material:"Блок А ротации, следующий непройденный вариант",status:"script",ref:REF_OPINION,talking:true,nextOwner:"nastya"},
-        {type:"Аниме-рубрика",title:"Шуточный пост про аниме #2",material:"Идея и сценарий от Насти, детали уточняются",status:"script",talking:true},
-      ] },
+      darina:{type:"Базовый ролик",title:"Darling in the Franxx: рукав манга-панелями",material:"Планируется новая съёмка этой тату на следующей неделе (сейчас есть только фото IMG_3543, тот же рукав что в резервной карусели)",status:"edit",img:"darling_franxx.jpg"} },
     { d:18, wd:"Вс",
       darina:{type:"Ротация",title:"Аукцион на эскиз",material:"Рисует новый эскиз и отдаёт тому, кто предложит больше. Нужно свежее действие, рисует специально под это",status:"edit"},
       studio:{type:"До/после",title:"Формат до/после: готовая работа #2",material:"Второй до/после на неделю, тоже без новой съёмки",status:"edit"} },
@@ -484,9 +482,14 @@ function card(track, entry, id){
 }
 
 function studioCell(row){
+  let extra = '';
+  if(Array.isArray(row.studio)){
+    extra = row.studio.map((e,i) => card('studio', e, 'd'+row.d+'-studio'+i)).join('');
+  } else if(row.studio){
+    extra = card('studio', row.studio, 'd'+row.d+'-studio');
+  }
   if(row.darina && row.darina.coauthor){
-    const id = 'd'+row.d;
-    return `<div class="card">
+    const collabCard = `<div class="card">
       <div class="card-body">
         <div class="track studio"><i class="dot studio" style="width:7px;height:7px;border-radius:50%;background:currentColor;"></i>Студия</div>
         <div class="type">${escapeHtml(row.darina.type)} · Collab</div>
@@ -495,11 +498,10 @@ function studioCell(row){
         ${scriptBlock(row.darina)}
       </div>
     </div>`;
+    return extra ? `<div class="stack">${collabCard}${extra}</div>` : collabCard;
   }
-  if(Array.isArray(row.studio)){
-    return `<div class="stack">` + row.studio.map((e,i) => card('studio', e, 'd'+row.d+'-studio'+i)).join('') + `</div>`;
-  }
-  return card('studio', row.studio, row.studio ? 'd'+row.d+'-studio' : null);
+  if(!extra) return card('studio', null, null);
+  return Array.isArray(row.studio) ? `<div class="stack">${extra}</div>` : extra;
 }
 
 const ALL_DAYS = {};
